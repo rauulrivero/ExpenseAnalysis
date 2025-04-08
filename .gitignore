@@ -176,3 +176,5 @@ cython_debug/
 
 # Database files
 data/
+DataLake/
+datamarts/
