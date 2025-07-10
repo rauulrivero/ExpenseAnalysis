@@ -1,5 +1,10 @@
-dotenv
-flask
-streamlit
-torch
+pandas 
+requests
+numpy
+matplotlib
 scikit-learn
+seaborn
+scipy
+statsmodels
+ipykernel
+xgboost
