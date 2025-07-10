@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 load_dotenv() 
 
 class Config:
+    PICOTA_API_ID = os.getenv('PICOTA_API_ID')
+
 
     def __init__(self):
         self.FLASK_ENV = os.getenv("FLASK_ENV", "development")
