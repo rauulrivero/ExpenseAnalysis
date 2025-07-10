@@ -179,3 +179,4 @@ data/
 DataLake/
 datamarts/
 project/backend/.env
+project/
