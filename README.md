@@ -171,3 +171,144 @@ Este notebook compara el rendimiento de los modelos explicativos obtenidos en lo
 - Permite identificar las variables que más influyen en el gasto en cada categoría.
 
 > 🎯 Esta etapa es clave para entender el comportamiento del gasto en los hogares y qué factores lo determinan, tanto desde una perspectiva lineal como no lineal.
+
+## 🔧 Paso 7️⃣: Creación del gemelo digital en Quassar/Picota
+
+Tras construir y validar el datamart final en formato compatible con **Picota**, el siguiente paso es crear nuestro **gemelo digital** para modelizar el comportamiento de los hogares.
+
+### ✍️ 7.1 Registro en Quassar y Picota
+
+1️⃣ Accede a [Quassar](https://quassar.io/) y [Picota](https://picota.io/).  
+2️⃣ Crea una cuenta gratuita o inicia sesión si ya tienes una.  
+3️⃣ Desde el panel de usuario de **Picota**, crea un nuevo proyecto y selecciona como fuente de datos el datamart generado en el paso anterior.
+
+---
+
+### 🔹 7.2 Definir la `Reality` y el `DigitalSubject` en DSL
+
+Usaremos el **DSL de Picota** (Domain-Specific Language) para definir formalmente nuestra `Reality España` y el `DigitalSubject hogar`.
+
+A continuación, reproducir una estructura **como se muestra en la ilustración `quassar_picota_subject.png`**:
+
+```picota
+Reality España
+
+Variable tasaCambioEurUsd is Numeric
+Variable tipoInteres is Numeric
+
+Subject hogar is Prototype(prefix = "hogar")
+    Variable temperaturaMedia is Numeric
+    Variable tasaParo is Numeric
+    Variable inflacion is Numeric
+    Variable ipc is Numeric
+    Variable capitalProvincia is Boolean
+    Variable tamanoMunicipio is Numeric
+    Variable densidad is Numeric
+    Variable superficie is Numeric
+    Variable tipoCasa is Numeric
+    Variable aguaCaliente is Boolean
+    Variable calefaccion is Boolean
+    Variable zonaResidencial is Boolean
+    Variable regimenTenencia is Numeric
+    Variable edadSp is Numeric
+    Variable espanolSp is Boolean
+    Variable educacionSuperiorSp is Boolean
+    Variable numeroViviendasAdicionales is Numeric
+    Variable ingresosNetos is Numeric
+    Variable tasaAhorro is Numeric
+    Variable gastoNoMonetario is Numeric
+    Variable comidasTotales is Numeric
+    Variable fuentePrincipalIngresos is Enumerated("pension" "asalariado" "autonomoYRenta")
+    Variable gastoMonetario is Numeric Composite
+        Components("productosAlimenticios11" "bebidasNoAlcoholicas12" "bebidasAlcoholicas21" "tabaco22" ... "remesas128")
+    Variable miembros is Numeric Composite
+        Components("ancianos" "adultos" "ninos")
+        Components("masculinos" "femeninos")
+        Components("ocupados" "noOcupados")
+        Components("activos" "noActivos")
+        Components("conIngresos" "sinIngresos")
+        Components("estudiantes" "noEstudiantes")
+```
+
+### 🔹 7.3 Definir el `DigitalTwin`
+
+A continuación, se define el `DigitalTwin`, siguiendo el ejemplo de la ilustración `quassar_picota_twin.png`:
+
+```picota
+DigitalTwin
+    DigitalSubject
+        subject = España.hogar
+        Resolution(scale = Hours)
+        InferenceModel
+            variable = España.hogar.gastoMonetario
+```
+
+🔨 **Una vez definido el `DigitalTwin`, aún no está listo el gemelo digital:**
+
+1️⃣ Luego, deberás pulsar el botón `Build in Picota` desde el editor de `Quassar`.  
+2️⃣ En el paso siguiente, debes **comprimir todos los archivos `.tsv` ubicados dentro de la carpeta generada `/picotaData`** (⚠️ *no comprimir la carpeta completa, solo su contenido*).  
+3️⃣ Después, en la interfaz de `Picota`, **subir ese archivo comprimido en la sección correspondiente y pulsar `Construir`**.
+
+✅ Al finalizar este proceso, tendrás el **gemelo digital listo para ejecutar estimaciones y análisis avanzados sobre el gasto monetario de los hogares en España**.
+
+---
+
+## 8️⃣ Preparar hogares para simulación y ajustar impuestos
+
+Una vez **entrenado el gemelo digital**, se deben ejecutar los siguientes pasos para preparar la simulación fiscal:
+
+### 🔹 8.1 Crear datamart de hogares simulados
+
+📓 Ejecutar el notebook:  
+`notebooks/create_datamart_irpf.ipynb`  
+
+✅ Esto generará los hogares con las datos necesarios para la simulación fiscal.
+
+---
+
+### 🔹 8.2 Ajustar impuestos y crear datamart de tipos impositivos
+
+📓 Ejecutar el notebook:  
+`notebooks/create_datamart_indirect_taxes.ipynb`  
+
+🔧 Antes de ejecutarlo puedes **ajustar manualmente los tipos impositivos para reflejar la realidad fiscal deseada** (o bien dejar los valores por defecto).
+
+✅ Al finalizar este notebook, quedarán configurados los tipos de impuestos indirectos que se utilizarán en la simulación (IVA, IGIC, IPSI).
+
+---
+
+---
+
+## 9️⃣ Configurar API y ejecutar la simulación fiscal
+
+### 🔹 9.1 Copiar API ID del gemelo digital
+
+Una vez construido el gemelo digital en Picota:
+
+- Accede al gemelo digital en Picota y copia el valor de `API_ID` que se ha generado.
+
+---
+
+### 🔹 9.2 Configurar API en el notebook de simulación
+
+📓 Abre el notebook:  
+`notebooks/irpf_simulation.ipynb`
+
+🔧 Sustituye la línea:
+
+```python
+API_ID = 'TU_API_ID'
+```
+
+por:
+
+```python
+API_ID = 'el_api_id_de_tu_gemelo'
+```
+
+### 🔹 9.3 Ejecutar simulación
+
+✅ Ejecuta el notebook completo `notebooks/irpf_simulation.ipynb` para simular distintos escenarios de deducción fiscal.
+
+📝 **Opcional:**  
+Puedes ajustar las **probabilidades de nacimiento en cada escenario** y el **importe a deducir** para personalizar los escenarios según tus necesidades antes de ejecutar la simulación.
