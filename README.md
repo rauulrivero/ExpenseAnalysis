@@ -1,7 +1,13 @@
 # ExpenseAnalysis
 
+Este repositorio contiene el código, scripts y recursos necesarios para la construcción de un gemelo digital de los hogares en España, con el objetivo de analizar y predecir su comportamiento de consumo ante distintos escenarios fiscales, económicos y demográficos.
 
-Este repositorio contiene el código y los recursos necesarios para trabajar con microdatos del Instituto Nacional de Estadística (INE) desde el año 2006 hasta 2023, junto con otros indicadores como el IPC y la tasa de paro por comunidad autónoma.
+El proyecto se centra en la integración y explotación de microdatos anonimizados de la Encuesta de Presupuestos Familiares (EPF) del Instituto Nacional de Estadística (INE), abarcando el período 2006–2023. Además, incorpora indicadores externos como el IPC y la tasa de paro regional, lo que permite ajustar los modelos a condiciones macroeconómicas actuales.
+
+Mediante técnicas avanzadas de ciencia e ingeniería de datos, y utilizando herramientas como Quassar y Picota, se construye un gemelo digital estimativo que permite simular y cuantificar el impacto de políticas fiscales —como deducciones IRPF o variaciones en IVA— sobre los patrones de gasto de los hogares. Esta herramienta está diseñada para facilitar análisis detallados y apoyar la toma de decisiones en el diseño de políticas públicas equitativas y sostenibles.
+
+El repositorio incluye notebooks para la creación de datamarts temáticos, definición y despliegue del `DigitalTwin`, simulaciones sobre escenarios fiscales, y scripts de preprocesamiento, ofreciendo un flujo de trabajo reproducible y documentado de principio a fin.
+
 
 ## 📥 Paso 1: Recogida de Microdatos
 
